@@ -27,6 +27,7 @@ d3.json("/yarra.json", function(data) {
     svg.selectAll(".line")
       .data(data).enter()
       .append("svg:line")
+        .attr("class", "river")
         .attr("stroke", "black")
         .attr("x1", function(d) { return d[0].distance;})
         .attr("x2", function(d) { return d[1].distance;})

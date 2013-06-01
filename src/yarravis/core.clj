@@ -22,54 +22,67 @@
   [
    {:id 0
     :location "Mouth"
+    :distance 0
     :height 0
     }
    {:id 1
     :location "Docklands"
+    :distance 3
     :height 3
     }
    {:id 3
     :location "Southgate"
+    :distance 5
     :height 5
     }
    {:id 4
     :location "South Yarra"
+    :distance 8
     :height 10
     }
    {:id 5
     :location "Abbotsford"
+    :distance 10
     :height 25
     }
    {:id 6
     :location "Kew"
+    :distance 16
     :height 30
     }
    {:id 7
     :location "Heidelberg"
+    :distance 19
     :height 45
     }
    {:id 8
     :location "Templestowe"
+    :distance 23
     :height 55
     }
    {:id 9
     :location "Warrandyte"
+    :distance 28
     :height 60
     }
    {:id 10
     :location "Coldstream"
+    :distance 33
     :height 70
     }
    {:id 11
     :location "Healesville"
+    :distance 40
     :height 80
     }
    {:id 12
     :location "Launching Place"
+    :distance 43
     :height 95
     }
    {:id 13
     :location "Millgrove"
+    :distance 49
     :height 100
     }
    ])

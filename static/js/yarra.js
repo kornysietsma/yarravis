@@ -27,12 +27,14 @@ d3.json("/yarra.json", function(data) {
                .interpolate("basis")
                .x(function(d) { return x(d.distance); })
                .y(function(d) { return y(d.height); });
+    
 
-    svg.selectAll("circle.line")
-       .data(data, key)
-     .enter().append("svg:circle")
-       .attr("class", "line")
-       .attr("cx", function(d) { return x(d.distance/scale); })
-       .attr("cy", function(d) { return y(d.height/scale); })
-       .attr("r", function(d) { return 5; });
+    svg.selectAll(".line")
+      .data(data,key).enter()
+      .append("svg:line")
+        .attr("stroke", "black")
+        .attr("x1", function(d) { return x(d.distance); })
+        .attr("x2", function(d) { return x(d.distance + 10); })
+        .attr("y1", function(d) { return y(d.height); })
+        .attr("y2", function(d) { return y(d.height + 10); });
 });

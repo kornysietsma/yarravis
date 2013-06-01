@@ -24,7 +24,7 @@
       csv/read-csv
       csv-to-maps))
 
-(def numeric-field #{:Northing :Easting :Zone})
+(def numeric-field #{:Northing :Easting :Zone (keyword "Visit Date") (keyword "Visit Time")})
 
 (defn parse-ll [s]
   (Double/parseDouble (first (clojure.string/split s #"\s"))))
@@ -115,5 +115,20 @@
            (map #(assoc % :elevation (gelev (:Latitude %) (:Longitude %))) (water-data)))
   )
 
-(defn water-grouped []
-  (sort-by :elevation (group-by #(select-keys % [:Longitude :Latitude :elevation (keyword "Site Name")]) (water-elev))))
+(defn water-by-locn []
+  (group-by #(select-keys % [:Longitude :Latitude :elevation (keyword "Site Name")]) (water-elev)))
+
+(defn latest-reading [water-readings]
+  (first
+   (sort-by #(- ((keyword "Visit Time") %)) water-readings)))
+
+(defn water-for-json-grouped []
+  (sort-by :elevation
+           (for [[k v] (water-by-locn)]
+             (assoc k :values v))))
+
+(defn water-for-json []
+  (sort-by :elevation
+           (for [[k v] (water-by-locn)]
+             (merge k (latest-reading v)))))
+

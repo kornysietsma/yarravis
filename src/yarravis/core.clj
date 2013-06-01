@@ -1,5 +1,6 @@
 (ns yarravis.core
-  (:require [compojure.core :refer :all]
+  (:require [yarravis.data :as data]
+            [compojure.core :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ring.util.response :as resp]
@@ -91,6 +92,7 @@
   (GET "/" [] (resp/file-response "index.html" {:root "static"}))
   (GET "/bubble.json" [] (bubbledata))
   (GET "/yarra.json" [] (partition 2 1 (yarradata))) 
+  (GET "/water.json" [] (data/water-for-json)) 
   (route/files "/" {:root "static"})
   (route/not-found "<h1>Page not found</h1>"))
 

@@ -5257,3 +5257,16 @@ a.badge:focus {
 body.main {
   padding-top: 60px;
 }
+line.river {
+  stroke: red;
+  stroke-width: 5px;
+}
+line.sea-level {
+  stroke: black;
+  stroke-dasharray: 10,10;
+}
+circle {
+  fill: blue;
+  stroke: black;
+  stroke-width: 10px;
+}

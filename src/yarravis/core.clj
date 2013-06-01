@@ -90,7 +90,7 @@
 (defroutes app-routes
   (GET "/" [] (resp/file-response "index.html" {:root "static"}))
   (GET "/bubble.json" [] (bubbledata))
-  (GET "/yarra.json" [] (seq  (yarradata)))
+  (GET "/yarra.json" [] (partition 2 1 (yarradata))) 
   (route/files "/" {:root "static"})
   (route/not-found "<h1>Page not found</h1>"))
 

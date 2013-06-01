@@ -18,6 +18,7 @@ d3.json("/yarra.json", function(data) {
     var svg = d3.select("#yarra-chart")
      .append("svg:svg")
        .attr("class", "box")
+       .attr("height", h * 2)
      .append("svg:g")
        .attr("transform", "translate(" + 100 + "," + 300 + ")");
 

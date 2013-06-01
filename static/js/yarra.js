@@ -17,8 +17,7 @@ d3.json("/yarra.json", function(data) {
 
     var svg = d3.select("#yarra-chart")
      .append("svg:svg")
-       .attr("width", w * 5)
-       .attr("height", h * 2)
+       .attr("class", "box")
      .append("svg:g")
        .attr("transform", "translate(" + 100 + "," + 300 + ")");
 
@@ -49,7 +48,7 @@ d3.json("/yarra.json", function(data) {
 
     svg.selectAll(".nothing")
       .data(data).enter()
-      .append("svg:rect")
+      .append("svg:circle")
         .attr("class", "site")
         .attr("x", function(d) { return d[0].distance * xScale; })
         .attr("y", function(d) { return d[0].height * yScale * -1 - 5;})

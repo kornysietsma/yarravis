@@ -88,11 +88,17 @@
     }
    ])
 
+(defn water-optionally-by [timestamp]
+  (if timestamp
+    (data/water-readings-by (Long/parseLong timestamp))
+    (data/water-data)))
+
 (defroutes app-routes
   (GET "/" [] (resp/file-response "index.html" {:root "static"}))
   (GET "/bubble.json" [] (bubbledata))
   (GET "/yarra.json" [] (partition 2 1 (yarradata))) 
-  (GET "/water.json" [] (data/water-for-json)) 
+  (GET "/water.json" [by] (water-optionally-by by)) 
+  (GET "/date-range.json" [] (data/date-range)) 
   (route/files "/" {:root "static"})
   (route/not-found "<h1>Page not found</h1>"))
 

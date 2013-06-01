@@ -22,7 +22,9 @@
 
 (def numeric-field #{:Northing :Easting :Zone})
 
-(def date-field #{(keyword "Visit Date")})
+(def visit-date-kw (keyword "Visit Date"))
+
+(def date-field #{visit-date-kw})
 
 (defn parse-ll [s]
   (Double/parseDouble (first (clojure.string/split s #"\s"))))
@@ -77,7 +79,13 @@
   (group-by #(select-keys % [:Longitude :Latitude :elevation (keyword "Site Name")]) (water-elev)))
 
 (defn latest-reading [water-readings]
-  (first (sort-by #(- ((keyword "Visit Date") %)) water-readings)))
+  (first (sort-by #(- (visit-date-kw %)) water-readings)))
+
+(defn latest-reading-by [water-readings timestamp]
+  (->> water-readings
+       (filter #(<= (visit-date-kw %) timestamp))
+       (sort-by #(- (visit-date-kw %)))
+       first))
 
 (defn water-for-json-grouped []
   (sort-by :elevation
@@ -89,3 +97,15 @@
            (for [[k v] (water-by-locn)]
              (merge k (latest-reading v)))))
 
+(defn water-readings-by [timestamp]
+  (println "filtering readings before " timestamp)
+  (filter visit-date-kw  ; filter out any with no date => not in range
+          (sort-by :elevation
+                    (for [[k v] (water-by-locn)]
+                      (merge k (latest-reading-by v timestamp))))))
+
+(defn date-range []
+  (let [by-time (sort-by visit-date-kw (water-elev))
+        min (visit-date-kw (first by-time))
+        max (visit-date-kw (last by-time))]
+    {:body {:min min :max max}}))

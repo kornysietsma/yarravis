@@ -5257,3 +5257,12 @@ a.badge:focus {
 body.main {
   padding-top: 60px;
 }
+line {
+  stroke: red;
+  stroke-width: 5px;
+}
+circle {
+  fill: blue;
+  stroke: black;
+  stroke-width: 10px;
+}

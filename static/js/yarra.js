@@ -6,7 +6,7 @@ d3.json("/yarra.json", function(data) {
 
     var scale = 3;
 
-    var w = 485 ,
+    var w = 4850 ,
         h = 323,
         p = 20,
         maxvalx = d3.max(data, key),

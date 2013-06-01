@@ -20,9 +20,24 @@ d3.json("/yarra.json", function(data) {
        .attr("width", w * 5)
        .attr("height", h * 2)
      .append("svg:g")
-       .attr("transform", "translate(" + 20 + "," + 300 + ")");
+       .attr("transform", "translate(" + 100 + "," + 300 + ")");
 
     console.log("Sample size: " + sampsize);
+
+    svg.append("svg:line")
+      .attr("class", "sea-level")
+      .attr("stroke", "black")
+      .attr("x1", -10)
+      .attr("x2", w * 2)
+      .attr("y1", 0)
+      .attr("y2", 0);
+
+    svg.append("svg:text")
+      .attr("class", "label")
+      .attr("x", -70)
+      .attr("y", 3)
+      .text("Sea Level");
+
 
     svg.selectAll(".line")
       .data(data).enter()

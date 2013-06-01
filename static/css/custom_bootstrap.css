@@ -5257,7 +5257,7 @@ a.badge:focus {
 body.main {
   padding-top: 60px;
 }
-line {
+line.river {
   stroke: red;
   stroke-width: 5px;
 }

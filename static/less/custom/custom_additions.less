@@ -2,7 +2,7 @@
 // see http://ruby.bvision.com/blog/please-stop-embedding-bootstrap-classes-in-your-html for best practices!
 
 body.main {
-   padding-top: 60px;
+   padding-top: 20px;
 }
 h1 {
     text-align: center;
@@ -20,10 +20,21 @@ line.sea-level{
 }
 circle{
     fill: blue;
-    stroke: black;
     stroke-width: 10px;
 }
+
+.decoration{
+    height: 200px;
+    position: absolute;
+    z-index: -1000;
+    width: 100%;
+    background-color: blue;
+}
+
 .box {
     width: 100%;
     height: 100%;
+}
+container.centralise {
+    width: 100%;
 }

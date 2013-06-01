@@ -37,16 +37,12 @@ d3.json("/water.json", function(data) {
       .text("Sea Level");
 
 
-   var convertY = function(site) {
-     return (site.elevation * yScale) * -1;
-   };
-
-   var convertX = function(d, mod, total){
-     return (dataX * xScale + total) + mod;
+   var convertY = function(site, offset) {
+     return (site.elevation * yScale + offset) * -1;
    };
 
    var dy = function(site){
-     return site.location.length * 10;
+     return site["pH (pH Units)"] * 10;
    };
 
    var distanceBtwPoints = function(x1, y1, x2, y2){
@@ -76,44 +72,40 @@ d3.json("/water.json", function(data) {
    };
 
    var riverLines = function(node){
-
-     addDistances(data);
-
      node.selectAll(".nothing")
          .data(data).enter()
          .append("svg:line")
           .attr("class", "river")
           .attr("x1", function(d) {return d[0].distance;})
           .attr("x2", function(d) {return d[1].distance;})
-          .attr("y1", function(d) {return convertY(d[0]);})
-          .attr("y2", function(d) {return convertY(d[1]);});
+          .attr("y1", function(d) {return convertY(d[0], 0);})
+          .attr("y2", function(d) {return convertY(d[1], 0);});
    };
-   
-  
 
+   var sitePoints = function(node){
+    svg.selectAll(".nothing")
+       .data(data).enter()
+       .append("svg:circle")
+         .attr("class", "site")
+         .attr("cx", function(d) {return d[0].distance;})
+         .attr("cy", function(d) {return convertY(d[0], 0);})
+         .attr("r", 5);
+   };  
+
+   var areas = function(node){
+     svg.selectAll(".nothing")
+        .data(data).enter()
+        .append("svg:polygon")
+        .attr("points", function(d) {
+              return d[0].distance + "," + convertY(d[0], 0) + " " +
+                     d[0].distance + "," + convertY(d[0], dy(d[0])) + " " +
+                     d[1].distance + "," + convertY(d[1], dy(d[1])) + " " +
+                     d[1].distance + "," + convertY(d[1], 0);
+        });
+   };
+
+  addDistances(data);
   riverLines(svg);
-  // svg.selectAll(".nothing")
-  //    .data(data).enter()
-  //    .append("svg:line")
-  //      .attr("class", "river")
-  //      .attr("x1", function(d) {return getX(d[0], 0);})
-  //      .attr("x2", function(d) {return getX(d[1], 0);})
-  //      .attr("y1", function(d) {return getY(d[0], 0);})
-  //      .attr("y2", function(d) {return getY(d[1], 0);});
-
-  // svg.selectAll(".nothing")
-  //  .data(data).enter()
-  //  .append("svg:polygon")
-  //  .attr("points", function(d) {return getX(d[0], 0) + "," + getY(d[0], 0)     + " " +
-  //                                      getX(d[0], 0) + "," + getY(d[0], dy(d[0])) + " " +
-  //                                      getX(d[1], 0) + "," + getY(d[1], dy(d[1])) + " " +
-  //                                      getX(d[1], 0) + "," + getY(d[1], 0);});
-
-  //  svg.selectAll(".nothing")
-  //    .data(data).enter()
-  //    .append("svg:circle")
-  //      .attr("class", "site")
-  //      .attr("cx", function(d) {return getX(d[0], 0);})
-  //      .attr("cy", function(d) {return getY(d[0], 0);})
-  //      .attr("r", 5);
+  sitePoints(svg);
+  areas(svg);
 });

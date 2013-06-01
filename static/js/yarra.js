@@ -37,33 +37,8 @@ d3.json("/water.json", function(data) {
       .text("Sea Level");
 
 
-<<<<<<< HEAD
-    svg.selectAll(".nothing")
-      .data(data).enter()
-      .append("svg:circle")
-        .attr("class", "site")
-        .attr("x", function(d) { return d[0].distance * xScale; })
-        .attr("y", function(d) { return d[0].height * yScale * -1 - 5;})
-        .attr("width", 10)
-        .attr("height", 10);
-
-
-//    svg.selectAll(".nothing")
-//      .data(data).enter()
-//      .append("svg:text")
-//        .attr("class", "site-label")
-//        .attr("x", function(d) { return d[0].distance * xScale; })
-//        .attr("y", function(d) { return d[0].height * yScale * -1 - 15;})
-//        .text(function(d) { return d[0].location; })
-//        .attr("transform", "rotate(-5)");
-        
-
-   var getY = function(site, mod) {
-     return (site.height * yScale + mod) * -1;
-=======
    var convertY = function(site, offset) {
      return (site.elevation * yScale + offset) * -1;
->>>>>>> b4e7e74d7d3d6afff1ee7cedcae131b8b81dd12c
    };
 
    var dy = function(site){

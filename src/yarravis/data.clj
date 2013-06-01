@@ -92,11 +92,7 @@
            (for [[k v] (water-by-locn)]
              (assoc k :values v))))
 
-(defn water-for-json []
-  (sort-by :elevation
-           (for [[k v] (water-by-locn)]
-             (merge k (latest-reading v)))))
-
+; public
 (defn water-readings-by [timestamp]
   (println "filtering readings before " timestamp)
   (filter visit-date-kw  ; filter out any with no date => not in range
@@ -104,6 +100,7 @@
                     (for [[k v] (water-by-locn)]
                       (merge k (latest-reading-by v timestamp))))))
 
+; public
 (defn date-range []
   (let [by-time (sort-by visit-date-kw (water-elev))
         min (visit-date-kw (first by-time))

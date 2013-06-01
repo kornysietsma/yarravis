@@ -5259,7 +5259,8 @@ body.main {
 }
 h1 {
   text-align: center;
-  font-family: Edwardian Script;
+  font-family: 'Lobster Two', cursive;
+  font-style: italic;
 }
 line.river {
   stroke: red;

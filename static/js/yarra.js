@@ -22,6 +22,12 @@ d3.json("/yarra.json", function(data) {
      .append("svg:g")
        .attr("transform", "translate(" + p + "," + p + ")");
 
+
+    var line = d3.svg.line()
+               .interpolate("basis")
+               .x(function(d) { return x(d.distance); })
+               .y(function(d) { return y(d.height); });
+
     svg.selectAll("circle.line")
        .data(data, key)
      .enter().append("svg:circle")

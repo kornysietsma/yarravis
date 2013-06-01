@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Clojure D3 spike</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/custom_bootstrap.css" rel="stylesheet" media="screen">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/js/html5.js"></script>
+    <![endif]--> 
+ </head>
+  <body class="main">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">D3 Spike</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <h1>Clojure D3 spike project</h1>
+      <p>bubble chart stolen from
+      <a href="http://www.verisi.com/resources/d3-tutorial-basic-charts.htm#s3">http://www.verisi.com/resources/d3-tutorial-basic-charts.htm#s3</a>:</p>
+<div id="scatter-bubble-chart"></div>
+
+    </div> <!-- /container -->
+
+    <script src="js/jquery-1.9.1.js"></script>
+    <script src="js/bootstrap/bootstrap.js"></script>
+    <script src="js/n.min.js"></script>
+    <script src="js/underscore.1.4.4.js"></script>
+    <script src="js/underscore.string.2.3.0.js"></script>
+    <script type="text/javascript"> _.mixin(_.str.exports()) </script>
+    <script src="js/d3.v3.js"></script>
+    <script src="js/bubble.js"></script>
+  </body>
+</html>

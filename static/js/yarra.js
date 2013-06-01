@@ -55,6 +55,7 @@ d3.json("/yarra.json", function(data) {
         .attr("width", 10)
         .attr("height", 10);
 
+
 //    svg.selectAll(".nothing")
 //      .data(data).enter()
 //      .append("svg:text")

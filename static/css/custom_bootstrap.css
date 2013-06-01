@@ -5261,6 +5261,7 @@ h1 {
   text-align: center;
   font-family: 'Lobster Two', cursive;
   font-style: italic;
+  color: #ce61a4;
 }
 line.river {
   stroke: red;
@@ -5271,16 +5272,19 @@ line.sea-level {
   stroke-dasharray: 5,5;
   stroke-width: 5px;
 }
-circle {
-  fill: blue;
-  stroke-width: 10px;
-}
 .decoration {
   height: 200px;
   position: absolute;
   z-index: -1000;
   width: 100%;
-  background-color: blue;
+}
+.floatbox {
+  position: relative;
+  display: block;
+  height: 100px;
+  width: 100px;
+  margin: 0 auto;
+  z-index: -200;
 }
 .box {
   width: 100%;

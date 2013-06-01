@@ -3,7 +3,9 @@
             [clojure.java.io :as io]
             [clojure.algo.generic.math-functions :as math]
             [clojure.tools.reader.edn :as edn]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [clj-time.coerce :as time-coerce]
+            [clj-time.format :as time-format]))
 
 (def precision 0.0000001)
 
@@ -18,10 +20,16 @@
       csv/read-csv
       csv-to-maps))
 
-(def numeric-field #{:Northing :Easting :Zone (keyword "Visit Date") (keyword "Visit Time")})
+(def numeric-field #{:Northing :Easting :Zone})
+
+(def date-field #{(keyword "Visit Date")})
 
 (defn parse-ll [s]
   (Double/parseDouble (first (clojure.string/split s #"\s"))))
+
+(defn convert-date [string]
+  (let [fmt (time-format/formatter "dd-MMM-yy")]
+     (time-coerce/to-long (time-format/parse fmt string))))
 
 (defn clean-water [w]
   (into {}
@@ -30,6 +38,7 @@
            (cond
             (#{:Longitude :Latitude} (keyword k)) (parse-ll v)
             (numeric-field (keyword k)) (Double/parseDouble v)
+            (date-field (keyword k)) (convert-date v)
             :else v)])))
 
 (defn water-data []
@@ -62,15 +71,13 @@
 
 (defn water-elev []
   (sort-by :elevation
-           (map #(assoc % :elevation (gelev (:Latitude %) (:Longitude %))) (water-data)))
-  )
+           (map #(assoc % :elevation (gelev (:Latitude %) (:Longitude %))) (water-data))))
 
 (defn water-by-locn []
   (group-by #(select-keys % [:Longitude :Latitude :elevation (keyword "Site Name")]) (water-elev)))
 
 (defn latest-reading [water-readings]
-  (first
-   (sort-by #(- ((keyword "Visit Time") %)) water-readings)))
+  (first (sort-by #(- ((keyword "Visit Date") %)) water-readings)))
 
 (defn water-for-json-grouped []
   (sort-by :elevation

@@ -21,7 +21,7 @@ d3.json("/water.json", function(data) {
        .attr("width", w)
        .attr("height", h)
      .append("svg:g")
-       .attr("transform", "translate(" + 100 + "," + 300 + ")");
+       .attr("transform", "translate(" + 100 + "," + 700 + ")");
 
     svg.append("svg:line")
       .attr("class", "sea-level")
@@ -105,7 +105,7 @@ d3.json("/water.json", function(data) {
    };
 
   addDistances(data);
-  riverLines(svg);
-  sitePoints(svg);
   areas(svg);
+  // riverLines(svg);
+  sitePoints(svg);
 });

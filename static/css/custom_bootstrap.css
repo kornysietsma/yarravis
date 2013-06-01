@@ -5264,13 +5264,13 @@ h1 {
   color: #ce61a4;
 }
 line.river {
-  stroke: red;
+  stroke: #ce61a4;
   stroke-width: 5px;
 }
 line.sea-level {
-  stroke: cyan;
+  stroke: #ce61a4;
   stroke-dasharray: 5,5;
-  stroke-width: 5px;
+  stroke-width: 2px;
 }
 .decoration {
   height: 200px;
@@ -5285,6 +5285,15 @@ line.sea-level {
   width: 100px;
   margin: 0 auto;
   z-index: -200;
+}
+circle {
+  fill: #ce61a4;
+  stroke: white;
+  stroke-width: 3px;
+}
+polygon {
+  fill: #8ccbff;
+  stroke: none;
 }
 .box {
   width: 100%;

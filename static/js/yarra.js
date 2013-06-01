@@ -4,11 +4,11 @@ d3.json("/water.json", function(data) {
     var heightfn = function(d) { return d.height; };
     var key = function(d) { console.log(d); if (d === undefined) debugger; return d.id; };
 
-    var xScale = 10;
+    var xScale = 250;
     var yScale = 1;
 
-    var w = 485,
-        h = 323,
+    var w = 1024,
+        h = 800,
         maxvalx = d3.max(data, key),
         minvaly = d3.min(data, heightfn),
         maxvaly = d3.max(data, heightfn),
@@ -18,11 +18,10 @@ d3.json("/water.json", function(data) {
     var svg = d3.select("#yarra-chart")
      .append("svg:svg")
        .attr("class", "box")
-       .attr("height", h * 2)
+       .attr("width", w)
+       .attr("height", h)
      .append("svg:g")
        .attr("transform", "translate(" + 100 + "," + 300 + ")");
-
-    console.log("Sample size: " + sampsize);
 
     svg.append("svg:line")
       .attr("class", "sea-level")
@@ -57,24 +56,35 @@ d3.json("/water.json", function(data) {
      return Math.sqrt(Math.pow(dx,2), Math.pow(dy,2));
    };
 
+   var addDistances = function(dataPoints){
+     var runningX = 0;
+
+     for(var i=0; i<dataPoints.length; i++){
+       var d = dataPoints[i];
+
+       var x1 = d[0].Latitude;
+       var y1 = d[0].Longitude;
+       var x2 = d[1].Latitude;
+       var y2 = d[1].Longitude;
+       var dxy = distanceBtwPoints(x1,y1,x2,y2) * xScale;
+
+       d[0].distance = runningX;
+       d[1].distance = runningX + dxy; 
+
+       runningX += dxy;
+     }
+   };
+
    var riverLines = function(node){
 
-     var runningX = 0;
+     addDistances(data);
+
      node.selectAll(".nothing")
          .data(data).enter()
          .append("svg:line")
           .attr("class", "river")
-          .attr("x1", function(d) {console.log("runningX: " + runningX); return runningX;})
-          .attr("x2", function(d) {
-                        var x1 = d[0].Latitude;
-                        var y1 = d[0].Longitude;
-                        var x2 = d[1].Latitude;
-                        var y2 = d[1].Longitude;
-                        var dxy = distanceBtwPoints(x1,y1,x2,y2) * xScale;
-                        //console.log("(" + x1 + "," + y1 + ") (" + x2 + "," + y2 + ")");
-                        console.log("DSB2P: " + dxy); 
-                        runningX = runningX + dxy;
-                        return runningX;})
+          .attr("x1", function(d) {return d[0].distance;})
+          .attr("x2", function(d) {return d[1].distance;})
           .attr("y1", function(d) {return convertY(d[0]);})
           .attr("y2", function(d) {return convertY(d[1]);});
    };

@@ -16,21 +16,23 @@ d3.json("/water.json", function(data) {
         y = d3.scale.linear().domain([ minvaly, maxvaly ]).range([h, 0]);
 
     var svg = d3.select("#yarra-chart")
-     .append("svg:svg")
+     .append("svg")
        .attr("class", "box")
        .attr("width", w)
-       .attr("height", h)
-     .append("svg:g")
+       .attr("height", h);
+
+     var g = svg.append("g")
+       .attr("class", "graph")
        .attr("transform", "translate(" + 100 + "," + 700 + ")");
 
-    svg.append("svg:line")
+    g.append("svg:line")
       .attr("class", "sea-level")
       .attr("x1", -10)
       .attr("x2", w * 2)
       .attr("y1", 0)
       .attr("y2", 0);
 
-    svg.append("svg:text")
+    g.append("svg:text")
       .attr("class", "label")
       .attr("x", -70)
       .attr("y", 3)
@@ -42,7 +44,7 @@ d3.json("/water.json", function(data) {
    };
 
    var dy = function(site){
-     return site["pH (pH Units)"] * 10;
+     return Math.random() * 50;
    };
 
    var distanceBtwPoints = function(x1, y1, x2, y2){
@@ -71,41 +73,44 @@ d3.json("/water.json", function(data) {
      }
    };
 
+   var line = d3.svg.line()
+              .x(function(d) {return d.distance;})
+              .y(function(d) {return convertY(d,0);});
+
    var riverLines = function(node){
-     node.selectAll(".nothing")
+     node.selectAll("path.river")
          .data(data).enter()
-         .append("svg:line")
-          .attr("class", "river")
-          .attr("x1", function(d) {return d[0].distance;})
-          .attr("x2", function(d) {return d[1].distance;})
-          .attr("y1", function(d) {return convertY(d[0], 0);})
-          .attr("y2", function(d) {return convertY(d[1], 0);});
+         .append("path")
+          .attr("d", line)
+          .attr("class", "river");
    };
 
    var sitePoints = function(node){
-    svg.selectAll(".nothing")
+    node.selectAll("circle.site")
        .data(data).enter()
-       .append("svg:circle")
+       .append("circle")
          .attr("class", "site")
          .attr("cx", function(d) {return d[0].distance;})
-         .attr("cy", function(d) {return convertY(d[0], 0);})
+         .attr("cy", function(d) {return convertY(d[0],0);})
          .attr("r", 5);
    };  
 
+   var area = d3.svg.area()
+                .x(function(d)  {return d.distance;})
+                .y0(function(d) {return d.elevation * -1})
+                .y1(function(d) {return (d.elevation + (d["pH (pH Units)"] * 4)) * -1;})
+                .interpolate("linear");
+
    var areas = function(node){
-     svg.selectAll(".nothing")
+     node.selectAll("path.area")
         .data(data).enter()
-        .append("svg:polygon")
-        .attr("points", function(d) {
-              return d[0].distance + "," + convertY(d[0], 0) + " " +
-                     d[0].distance + "," + convertY(d[0], dy(d[0])) + " " +
-                     d[1].distance + "," + convertY(d[1], dy(d[1])) + " " +
-                     d[1].distance + "," + convertY(d[1], 0);
-        });
+        .append("path")
+        .attr("d", area)
+        .attr("class", "area");
    };
 
   addDistances(data);
-  areas(svg);
-  // riverLines(svg);
-  sitePoints(svg);
+  areas(g);
+  riverLines(g);
+  sitePoints(g);
 });

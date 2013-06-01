@@ -22,19 +22,14 @@ d3.json("/yarra.json", function(data) {
      .append("svg:g")
        .attr("transform", "translate(" + p + "," + p + ")");
 
-
-    var line = d3.svg.line()
-               .interpolate("basis")
-               .x(function(d) { return x(d.distance); })
-               .y(function(d) { return y(d.height); });
-    
+    console.log("Sample size: " + sampsize);
 
     svg.selectAll(".line")
-      .data(data,key).enter()
+      .data(data).enter()
       .append("svg:line")
         .attr("stroke", "black")
-        .attr("x1", function(d) { return x(d.distance); })
-        .attr("x2", function(d) { return x(d.distance + 10); })
-        .attr("y1", function(d) { return y(d.height); })
-        .attr("y2", function(d) { return y(d.height + 10); });
+        .attr("x1", function(d) { return d[0].distance;})
+        .attr("x2", function(d) { return d[1].distance;})
+        .attr("y1", function(d) { return d[0].height;})
+        .attr("y2", function(d) { return d[1].height;});
 });

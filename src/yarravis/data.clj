@@ -16,6 +16,29 @@
       (csv/read-csv :separator \tab)
       csv-to-maps))
 
+(defn read-csv-data [name]
+  (-> (str "data/" name)
+      slurp
+      csv/read-csv
+      csv-to-maps))
+
+(def numeric-field #{:Northing :Easting :Zone})
+
+(defn parse-ll [s]
+  (Double/parseDouble (first (clojure.string/split s #"\s"))))
+
+(defn clean-water [w]
+  (into {}
+        (for [[k v] w]
+          [(keyword k)
+           (cond
+            (#{:Longitude :Latitude} (keyword k)) (parse-ll v)
+            (numeric-field (keyword k)) (Double/parseDouble v)
+            :else v)])))
+
+(defn water-data []
+  (map clean-water (read-csv-data "waterdata.csv")))
+
 (defn clean-loc [loc]
   {:desc (loc "Location desc from google")
    :desc2 (loc "location desc from data")
@@ -51,5 +74,15 @@
               nil))))
 
 (defn mapdata []
-  (map #(assoc % :elev (elevation (:lat %) (:long %))) (locations))
+  (sort-by :long
+           (map #(assoc % :elev (:elevation (elevation (:lat %) (:long %)))) (locations)))
   )
+
+(defn water-elev []
+  (sort-by :Longitude
+           (map #(assoc % :elev (:elevation (elevation (:Latitude %) (:Longitude %)))) (water-data)))
+  )
+
+(defn locations []
+  (into #{}
+        (map #(select-keys % [:Latitude :Longitude]) (water-data))))

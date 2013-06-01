@@ -26,7 +26,6 @@ d3.json("/yarra.json", function(data) {
 
     svg.append("svg:line")
       .attr("class", "sea-level")
-      .attr("stroke", "black")
       .attr("x1", -10)
       .attr("x2", w * 2)
       .attr("y1", 0)
@@ -38,14 +37,32 @@ d3.json("/yarra.json", function(data) {
       .attr("y", 3)
       .text("Sea Level");
 
-
-    svg.selectAll(".line")
+    svg.selectAll(".nothing")
       .data(data).enter()
       .append("svg:line")
         .attr("class", "river")
-        .attr("stroke", "black")
         .attr("x1", function(d) { return d[0].distance * xScale;})
         .attr("x2", function(d) { return d[1].distance * xScale;})
         .attr("y1", function(d) { return d[0].height * yScale * -1;})
         .attr("y2", function(d) { return d[1].height * yScale * -1;});
+
+
+    svg.selectAll(".nothing")
+      .data(data).enter()
+      .append("svg:rect")
+        .attr("class", "site")
+        .attr("x", function(d) { return d[0].distance * xScale; })
+        .attr("y", function(d) { return d[0].height * yScale * -1 - 5;})
+        .attr("width", 10)
+        .attr("height", 10);
+
+    svg.selectAll(".nothing")
+      .data(data).enter()
+      .append("svg:text")
+        .attr("class", "site-label")
+        .attr("x", function(d) { return d[0].distance * xScale; })
+        .attr("y", function(d) { return d[0].height * yScale * -1 - 15;})
+        .text(function(d) { return d[0].location; })
+        .attr("transform", "rotate(-5)");
+       
 });

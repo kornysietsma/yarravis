@@ -5261,6 +5261,10 @@ line.river {
   stroke: red;
   stroke-width: 5px;
 }
+line.sea-level {
+  stroke: black;
+  stroke-dasharray: 10,10;
+}
 circle {
   fill: blue;
   stroke: black;

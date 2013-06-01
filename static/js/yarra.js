@@ -1,4 +1,4 @@
-d3.json("/yarra.json", function(data) {
+d3.json("/water.json", function(data) {
     sampsize = data.length;
 
     var heightfn = function(d) { return d.height; };
@@ -37,40 +37,73 @@ d3.json("/yarra.json", function(data) {
       .attr("y", 3)
       .text("Sea Level");
 
-   var getY = function(site, mod) {
-     return (site.height * yScale + mod) * -1;
+
+   var convertY = function(site) {
+     return (site.elevation * yScale) * -1;
    };
 
-   var getX = function(site, mod){
-     return (site.distance * xScale) + mod;
+   var convertX = function(d, mod, total){
+     return (dataX * xScale + total) + mod;
    };
 
    var dy = function(site){
      return site.location.length * 10;
    };
+
+   var distanceBtwPoints = function(x1, y1, x2, y2){
+     var dx = (x2 - x1);
+     var dy = (y2 - y1);
+     
+     return Math.sqrt(Math.pow(dx,2), Math.pow(dy,2));
+   };
+
+   var riverLines = function(node){
+
+     var runningX = 0;
+     node.selectAll(".nothing")
+         .data(data).enter()
+         .append("svg:line")
+          .attr("class", "river")
+          .attr("x1", function(d) {console.log("runningX: " + runningX); return runningX;})
+          .attr("x2", function(d) {
+                        var x1 = d[0].Latitude;
+                        var y1 = d[0].Longitude;
+                        var x2 = d[1].Latitude;
+                        var y2 = d[1].Longitude;
+                        var dxy = distanceBtwPoints(x1,y1,x2,y2) * xScale;
+                        //console.log("(" + x1 + "," + y1 + ") (" + x2 + "," + y2 + ")");
+                        console.log("DSB2P: " + dxy); 
+                        runningX = runningX + dxy;
+                        return runningX;})
+          .attr("y1", function(d) {return convertY(d[0]);})
+          .attr("y2", function(d) {return convertY(d[1]);});
+   };
    
-    svg.selectAll(".nothing")
-      .data(data).enter()
-      .append("svg:line")
-        .attr("class", "river")
-        .attr("x1", function(d) {return getX(d[0], 0);})
-        .attr("x2", function(d) {return getX(d[1], 0);})
-        .attr("y1", function(d) {return getY(d[0], 0);})
-        .attr("y2", function(d) {return getY(d[1], 0);});
+  
 
-   svg.selectAll(".nothing")
-    .data(data).enter()
-    .append("svg:polygon")
-    .attr("points", function(d) {return getX(d[0], 0) + "," + getY(d[0], 0)     + " " +
-                                        getX(d[0], 0) + "," + getY(d[0], dy(d[0])) + " " +
-                                        getX(d[1], 0) + "," + getY(d[1], dy(d[1])) + " " +
-                                        getX(d[1], 0) + "," + getY(d[1], 0);});
+  riverLines(svg);
+  // svg.selectAll(".nothing")
+  //    .data(data).enter()
+  //    .append("svg:line")
+  //      .attr("class", "river")
+  //      .attr("x1", function(d) {return getX(d[0], 0);})
+  //      .attr("x2", function(d) {return getX(d[1], 0);})
+  //      .attr("y1", function(d) {return getY(d[0], 0);})
+  //      .attr("y2", function(d) {return getY(d[1], 0);});
 
-    svg.selectAll(".nothing")
-      .data(data).enter()
-      .append("svg:circle")
-        .attr("class", "site")
-        .attr("cx", function(d) {return getX(d[0], 0);})
-        .attr("cy", function(d) {return getY(d[0], 0);})
-        .attr("r", 5);
+  // svg.selectAll(".nothing")
+  //  .data(data).enter()
+  //  .append("svg:polygon")
+  //  .attr("points", function(d) {return getX(d[0], 0) + "," + getY(d[0], 0)     + " " +
+  //                                      getX(d[0], 0) + "," + getY(d[0], dy(d[0])) + " " +
+  //                                      getX(d[1], 0) + "," + getY(d[1], dy(d[1])) + " " +
+  //                                      getX(d[1], 0) + "," + getY(d[1], 0);});
+
+  //  svg.selectAll(".nothing")
+  //    .data(data).enter()
+  //    .append("svg:circle")
+  //      .attr("class", "site")
+  //      .attr("cx", function(d) {return getX(d[0], 0);})
+  //      .attr("cy", function(d) {return getY(d[0], 0);})
+  //      .attr("r", 5);
 });

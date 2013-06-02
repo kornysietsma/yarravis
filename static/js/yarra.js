@@ -14,7 +14,9 @@ $(function() {
 d3.json("/water.json", function(data) {
     sampsize = data.length;
 
-    data = assignDefaultValues(data, "pH (pH Units)");
+    ["pH (pH Units)","Temperature - AIR (° C)","Temperature - WATER (° C)"].forEach(function(key) {
+        data = assignDefaultValues(data, key);
+    });
 
     var heightfn = function(d) { return d[0].elevation; };
     var key = function(d) { if (d === undefined) debugger; return d[0].elevation; };
@@ -150,38 +152,49 @@ d3.json("/water.json", function(data) {
         return d["Temperature - WATER (° C)"] * 4;
     };
 
+  var stacks = [
+      {func: ph, class: "area"},
+      {func: watertemp, class: "area2"},
+      {func: airtemp, class: "area3"}
+  ];
 
-   var area = d3.svg.area()
-                .x(function(d)  {return x(d.distance);})
-                .y0(function(d) {return y(d.elevation)})
-                .y1(function(d) {return y((d.elevation + ph(d)));})
-                .interpolate("linear");
+  stacks.forEach(function(stack, ix) {
+      stack.prevfns = [];
 
-   var areas = function(node){
-     node.selectAll("path.area")
-        .data(data).enter()
-        .append("path")
-        .attr("d", area)
-        .attr("class", "area");
-   };
+      for (var j = 0; j < ix; j++) {
+          stack.prevfns.push(stacks[j].func);
+      }
+      stack.y0fn = function(d) {
+          var y_result = d.elevation;
+          stack.prevfns.forEach(function (fn) {
+              y_result = y_result + fn(d);
+          });
+          return y(y_result);
+      };
+      stack.y1fn = function(d) {
+          var y_result = d.elevation;
+          stack.prevfns.forEach(function (fn) {
+              y_result = y_result + fn(d);
+          });
+          y_result = y_result + stack.func(d);
+          return y(y_result);
+      };
 
-   var area2 = d3.svg.area()
-                .x(function(d)  {return x(d.distance);})
-                .y0(function(d) {return y(d.elevation + ph(d))})
-                .y1(function(d) {return y((d.elevation + ph(d) + watertemp(d)));})
-                .interpolate("linear");
+      stack.area = d3.svg.area()
+          .x(function(d)  {return x(d.distance);})
+          .y0(stack.y0fn)
+          .y1(stack.y1fn)
+          .interpolate("linear");
+  });
 
-   var areas2 = function(node){
-     node.selectAll("path.area2")
-        .data(data).enter()
-        .append("path")
-        .attr("d", area2)
-        .attr("class", "area2");
-   };
-
-  addDistances(data);
-  areas(g);
-  areas2(g);
+    addDistances(data);
+    stacks.forEach(function(stack) {
+        g.selectAll("path." + stack["class"])
+            .data(data).enter()
+            .append("path")
+            .attr("d", stack.area)
+            .attr("class", stack["class"]);
+    });
   riverLines(g);
   sitePoints(g);
 });

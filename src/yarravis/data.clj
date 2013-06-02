@@ -23,6 +23,7 @@
 (def numeric-field #{:Northing :Easting :Zone})
 
 (def visit-date-kw (keyword "Visit Date"))
+(def sub-catchment-kw (keyword "Sub Catchment"))
 
 (def date-field #{visit-date-kw})
 
@@ -106,3 +107,7 @@
         min (visit-date-kw (first by-time))
         max (visit-date-kw (last by-time))]
     {:body {:min min :max max}}))
+
+; public
+(defn sub-catchments []
+  {:body (set (map sub-catchment-kw (water-data)))})

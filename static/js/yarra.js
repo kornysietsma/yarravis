@@ -182,13 +182,17 @@ d3.json("/water.json", function(data) {
    };
 
 
+    var subcatchment = function(d) {
+        return d["Sub Catchment"];
+    };
+
    var sitePoints = function(node){
     node.selectAll("circle.site")
        .data(data).enter()
        .append("circle")
         .on("mouseover", hover)
         .on("mouseout", hoverOff)
-         .attr("class", "site")
+         .attr("class", function(d) {return "site " + d[0]["Sub Catchment"];})
          .attr("cx", function(d) {return x(d[0].distance);})
          .attr("cy", function(d) {return y(d[0].elevation);})
          .attr("r", 5);

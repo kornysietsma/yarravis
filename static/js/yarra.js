@@ -150,7 +150,6 @@ d3.json("/water.json", function(data) {
    var line = d3.svg.line()
               .x(function(d) {return x(d.distance);})
               .y(function(d) {return y(d.elevation);});
-
               
     var hover = function(data) {
         var circle = d3.select(this)[0][0];
@@ -174,7 +173,13 @@ d3.json("/water.json", function(data) {
             .style("top", yPosition + "px")
             .select("#value")
             .text(data[0]["Site Name"]);
+
+        d3.select("#tooltip")
+            .select("#subcatchment")
+            .text(data[0]["Sub Catchment"]);
+
         the_map.setCenter(new google.maps.LatLng(lat,long));
+        d3.select("#tooltip").attr("class", data[0]["Sub Catchment"]);
         d3.select("#tooltip").classed("hidden", false);
         google.maps.event.trigger(the_map, "resize");
     };
@@ -190,7 +195,6 @@ d3.json("/water.json", function(data) {
           .attr("d", line)
           .attr("class", "river");
    };
-
 
     var subcatchment = function(d) {
         return d["Sub Catchment"];

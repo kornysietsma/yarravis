@@ -6,12 +6,47 @@ var mapOptions = {
 };
 var the_map;
 
+var the_tooltip = $("#tooltip");
+var the_decoration = $("div.decoration");
+
 $(function() {
     the_map = new google.maps.Map(document.getElementById("map-canvas"),
         mapOptions);
+
+    var imgs = [
+        {name: "port_of_melbourne",
+            title: "Port of Melbourne"
+        },
+        {name: "princes_bridge",
+            title: "Princes Bridge"
+        },
+        {name: "dight_falls",
+            title: "Dight Falls"
+        },
+        {name: "paper_mill",
+            title: "Paper Mill"
+        },
+        {name: "suburbia",
+            title: "Suburbia"
+        },
+        {name: "swamp",
+            title: "Swamplands"
+        },
+        {name: "thompson_reservoir",
+            title: "Thompson Reservoir"
+        },
+        {name: "mountains",
+            title: "Mount Baw Baw"
+        }
+
+    ];
+    imgs.forEach(function(img, ix) {
+        var new_el = $("<img src='/img/" + img.name + ".jpg' class='small_pic " + img.name + "'></img>")
+        new_el.prop('title', img.title);
+      the_decoration.append(new_el);
+    });
 });
 
-var the_tooltip = $("#tooltip");
 
 d3.json("/water.json", function(data) {
     sampsize = data.length;
@@ -37,7 +72,7 @@ d3.json("/water.json", function(data) {
         h = window.innerHeight - (padTop + padBot) - 10,
         maxvalx = 1387.5103013400449,
         minvaly = d3.min(data, heightfn),
-        maxvaly = d3.max(data, heightfn),
+        maxvaly = d3.max(data, heightfn) + 100,
         x = d3.scale.linear().domain([ 0, maxvalx]).range([0, w]),
         y = d3.scale.linear().domain([ minvaly, maxvaly ]).range([h, 0]);
 

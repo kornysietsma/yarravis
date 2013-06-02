@@ -5389,3 +5389,42 @@ container.centralise {
 #tooltip #map-canvas {
   height: 200px;
 }
+.decoration .small_pic {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  display: block;
+  top: 70px;
+}
+.decoration .small_pic.port_of_melbourne {
+  top: 220px;
+  left: 3%;
+}
+.decoration .small_pic.princes_bridge {
+  left: 12%;
+  top: 190px;
+}
+.decoration .small_pic.dight_falls {
+  left: 23%;
+  top: 180px;
+}
+.decoration .small_pic.paper_mill {
+  left: 38%;
+  top: 200px;
+}
+.decoration .small_pic.suburbia {
+  left: 50%;
+  top: 140px;
+}
+.decoration .small_pic.swamp {
+  left: 58%;
+  top: 130px;
+}
+.decoration .small_pic.thompson_reservoir {
+  left: 75%;
+  top: 100px;
+}
+.decoration .small_pic.mountains {
+  left: 90%;
+  top: 100px;
+}

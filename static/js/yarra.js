@@ -11,46 +11,37 @@ $(function() {
         mapOptions);
 });
 
-d3.json("/water.json", function(data) {
-    sampsize = data.length;
+var heightfn = function(d) { return d.height; };
+var key = function(d) { console.log(d); if (d === undefined) debugger; return d.id; };
 
-    var heightfn = function(d) { return d.height; };
-    var key = function(d) { console.log(d); if (d === undefined) debugger; return d.id; };
+var xScale = 250;
+var yScale = 1;
+var w = 1024,
+    h = 800;
 
-    var xScale = 250;
-    var yScale = 1;
 
-    var w = 1024,
-        h = 800,
-        maxvalx = d3.max(data, key),
-        minvaly = d3.min(data, heightfn),
-        maxvaly = d3.max(data, heightfn),
-        x = d3.scale.linear().domain([ 0, maxvalx]).range([0, w]),
-        y = d3.scale.linear().domain([ minvaly, maxvaly ]).range([h, 0]);
+var svg = d3.select("#yarra-chart")
+ .append("svg")
+   .attr("class", "box")
+   .attr("width", w)
+   .attr("height", h);
 
-    var svg = d3.select("#yarra-chart")
-     .append("svg")
-       .attr("class", "box")
-       .attr("width", w)
-       .attr("height", h);
+var g = svg.append("g")
+ .attr("class", "graph")
+ .attr("transform", "translate(" + 100 + "," + 700 + ")");
 
-     var g = svg.append("g")
-       .attr("class", "graph")
-       .attr("transform", "translate(" + 100 + "," + 700 + ")");
+g.append("svg:line")
+  .attr("class", "sea-level")
+  .attr("x1", -10)
+  .attr("x2", w * 2)
+  .attr("y1", 0)
+  .attr("y2", 0);
 
-    g.append("svg:line")
-      .attr("class", "sea-level")
-      .attr("x1", -10)
-      .attr("x2", w * 2)
-      .attr("y1", 0)
-      .attr("y2", 0);
-
-    g.append("svg:text")
-      .attr("class", "label")
-      .attr("x", -70)
-      .attr("y", 3)
-      .text("Sea Level");
-
+g.append("svg:text")
+  .attr("class", "label")
+  .attr("x", -70)
+  .attr("y", 3)
+  .text("Sea Level");
 
    var convertY = function(site, offset) {
      return (site.elevation * yScale + offset) * -1;
@@ -90,14 +81,7 @@ d3.json("/water.json", function(data) {
               .x(function(d) {return d.distance;})
               .y(function(d) {return convertY(d,0);});
 
-   var riverLines = function(node){
-     node.selectAll("path.river")
-         .data(data).enter()
-         .append("path")
-          .attr("d", line)
-          .attr("class", "river");
-   };
-
+              
     var hover = function(data) {
         var circle = d3.select(this)[0][0];
         var lat = data[0]["Latitude"];
@@ -120,6 +104,25 @@ d3.json("/water.json", function(data) {
          console.log("unhovering");
          d3.select("#tooltip").classed("hidden", true);
      };
+
+d3.json("/water.json", function(data) {
+    sampsize = data.length;
+
+
+    var maxvalx = d3.max(data, key),
+        minvaly = d3.min(data, heightfn),
+        maxvaly = d3.max(data, heightfn),
+        x = d3.scale.linear().domain([ 0, maxvalx]).range([0, w]),
+        y = d3.scale.linear().domain([ minvaly, maxvaly ]).range([h, 0]);
+
+   var riverLines = function(node){
+     node.selectAll("path.river")
+         .data(data).enter()
+         .append("path")
+          .attr("d", line)
+          .attr("class", "river");
+   };
+
 
    var sitePoints = function(node){
     node.selectAll("circle.site")

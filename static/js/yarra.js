@@ -109,7 +109,7 @@ d3.json("/water.json", function(data) {
       .attr("class", "label")
       .attr("x", x(1200))
       .attr("y", y(10))
-      .text("PH level");
+      .text("pH level");
 
     g.append("circle")
       .attr("class", "area")

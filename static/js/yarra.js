@@ -98,41 +98,24 @@ d3.json("/water.json", function(data) {
       .attr("y", y(0) + seaSpace + 3)
       .text("Sea Level");
 
-    g.append("svg:text")
-      .attr("class", "label")
-      .attr("x", x(1200))
-      .attr("y", y(10))
-      .text("pH level");
+    var drawLegend = function (n, key, clazz) {
+        g.append("svg:text")
+          .attr("class", "label")
+          .attr("x", x(1200))
+          .attr("y", y(20 + n * 30))
+          .text(key);
 
-    g.append("circle")
-      .attr("class", "area")
-       .attr("cx", x(1175))
-       .attr("cy", y(13))
-       .attr("r", 10);
+        g.append("circle")
+          .attr("class", clazz)
+           .attr("cx", x(1175))
+           .attr("cy", y(23 + n * 30))
+           .attr("r", 10);
+     };
 
-    g.append("svg:text")
-      .attr("class", "label")
-      .attr("x", x(1200))
-      .attr("y", y(40))
-      .text("Water Temperature");
-
-    g.append("circle")
-      .attr("class", "area2")
-       .attr("cx", x(1175))
-       .attr("cy", y(43))
-       .attr("r", 10);
-
-    g.append("svg:text")
-      .attr("class", "label")
-      .attr("x", x(1200))
-      .attr("y", y(70))
-      .text("Air Temperature");
-
-    g.append("circle")
-      .attr("class", "area3")
-       .attr("cx", x(1175))
-       .attr("cy", y(73))
-       .attr("r", 10);
+    drawLegend(0, "pH Level", "area");
+    drawLegend(1, "Water Temperature", "area2");
+    drawLegend(2, "Air Temperature", "area3");
+    drawLegend(3, "Turbidity", "turbidity");
 
    var dy = function(site){
      return Math.random() * 50;

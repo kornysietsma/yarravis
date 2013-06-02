@@ -152,13 +152,8 @@ d3.json("/water.json", function(data) {
    var area = d3.svg.area()
                 .x(function(d)  {return x(d.distance);})
                 .y0(function(d) {return y(d.elevation)})
-<<<<<<< Updated upstream
                 .y1(function(d) {return y((d.elevation + ph(d)));})
                 .interpolate("linear");
-=======
-                .y1(function(d) {return y((d.elevation + (d["pH (pH Units)"] * 4)));})
-                .interpolate("basis");
->>>>>>> Stashed changes
 
    var areas = function(node){
      node.selectAll("path.area")

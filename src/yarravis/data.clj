@@ -28,6 +28,9 @@
 (def date-field #{visit-date-kw})
 (def sub-catchment-field #{sub-catchment-kw})
 
+(defn- simplify-string [value]
+  (clojure.string/lower-case (clojure.string/replace value " " "-")))
+
 (defn- parse-ll [s]
   (Double/parseDouble (first (clojure.string/split s #"\s"))))
 
@@ -94,9 +97,6 @@
   (sort-by :elevation
            (for [[k v] (water-by-locn)]
              (assoc k :values v))))
-
-(defn- simplify-string [value]
-  (clojure.string/lower-case (clojure.string/replace value " " "")))
 
 ; public
 (defn water-readings-by [timestamp]

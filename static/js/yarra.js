@@ -78,7 +78,7 @@ d3.json("/water.json", function(data) {
       .attr("class", "area")
        .attr("cx", x(1190))
        .attr("cy", y(13))
-       .attr("r", 5);
+       .attr("r", 10);
 
     g.append("svg:text")
       .attr("class", "label")
@@ -90,7 +90,7 @@ d3.json("/water.json", function(data) {
       .attr("class", "area2")
        .attr("cx", x(1190))
        .attr("cy", y(23))
-       .attr("r", 5);
+       .attr("r", 10);
 
     g.append("svg:text")
       .attr("class", "label")
@@ -103,7 +103,7 @@ d3.json("/water.json", function(data) {
       .attr("class", "area3")
        .attr("cx", x(1190))
        .attr("cy", y(33))
-       .attr("r", 5);
+       .attr("r", 10);
 
    var dy = function(site){
      return Math.random() * 50;

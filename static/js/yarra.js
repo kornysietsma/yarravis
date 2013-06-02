@@ -98,13 +98,6 @@ d3.json("/water.json", function(data) {
       .attr("y", y(0) + seaSpace + 3)
       .text("Sea Level");
 
-      
-    g.append("svg:text")
-      .attr("class", "label")
-      .attr("x", x(0))
-      .attr("y", y(0) + seaSpace + 3)
-      .text("Sea Level");
-
     g.append("svg:text")
       .attr("class", "label")
       .attr("x", x(1200))
@@ -134,7 +127,6 @@ d3.json("/water.json", function(data) {
       .attr("x", x(1200))
       .attr("y", y(70))
       .text("Air Temperature");
-
 
     g.append("circle")
       .attr("class", "area3")

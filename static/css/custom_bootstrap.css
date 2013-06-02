@@ -5263,6 +5263,10 @@ h1 {
   font-style: italic;
   color: #ce61a4;
 }
+text.label {
+  font-size: 12pt;
+  line-spacing: 50px !important;
+}
 #yarra-chart {
   width: 100%;
   height: 100%;
@@ -5332,31 +5336,35 @@ circle.woori-yallock-creek {
   fill: #eabbd8;
 }
 circle.area {
-  fill: #73bfff;
+  fill: #005192;
   stroke: none;
 }
 path.area {
-  fill: #73bfff;
+  fill: #005192;
   stroke: none;
 }
 path.area2 {
-  fill: #8ccbff;
+  fill: #0066ba;
   stroke: none;
 }
 circle.area2 {
-  fill: #8ccbff;
+  fill: #0066ba;
   stroke: none;
 }
 path.area3 {
-  fill: #a6d7ff;
+  fill: #007ce1;
   stroke: none;
 }
 circle.area3 {
-  fill: #a6d7ff;
+  fill: #007ce1;
   stroke: none;
 }
 path.turbidity {
-  fill: #ff85d7;
+  fill: #0990ff;
+  stroke: none;
+}
+circle.turbidity {
+  fill: #0990ff;
   stroke: none;
 }
 .box {

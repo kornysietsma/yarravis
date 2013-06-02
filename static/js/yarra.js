@@ -113,33 +113,33 @@ d3.json("/water.json", function(data) {
 
     g.append("circle")
       .attr("class", "area")
-       .attr("cx", x(1190))
+       .attr("cx", x(1175))
        .attr("cy", y(13))
        .attr("r", 10);
 
     g.append("svg:text")
       .attr("class", "label")
       .attr("x", x(1200))
-      .attr("y", y(20))
+      .attr("y", y(40))
       .text("Water Temperature");
 
     g.append("circle")
       .attr("class", "area2")
-       .attr("cx", x(1190))
-       .attr("cy", y(23))
+       .attr("cx", x(1175))
+       .attr("cy", y(43))
        .attr("r", 10);
 
     g.append("svg:text")
       .attr("class", "label")
       .attr("x", x(1200))
-      .attr("y", y(30))
+      .attr("y", y(70))
       .text("Air Temperature");
 
 
     g.append("circle")
       .attr("class", "area3")
-       .attr("cx", x(1190))
-       .attr("cy", y(33))
+       .attr("cx", x(1175))
+       .attr("cy", y(73))
        .attr("r", 10);
 
    var dy = function(site){

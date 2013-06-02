@@ -95,7 +95,6 @@
 
 ; public
 (defn water-readings-by [timestamp]
-  (println "filtering readings before " timestamp)
   (filter visit-date-kw  ; filter out any with no date => not in range
           (sort-by :elevation
                     (for [[k v] (water-by-locn)]

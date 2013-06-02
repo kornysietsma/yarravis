@@ -5299,6 +5299,42 @@ circle.site {
   stroke: white;
   stroke-width: 3px;
 }
+circle.little-yarra-river-and-hoddles-creek {
+  fill: #160710;
+}
+circle.merri-creek {
+  fill: #341026;
+}
+circle.moonee-ponds-creek {
+  fill: #52193c;
+}
+circle.gardiners-creek {
+  fill: #6f2352;
+}
+circle.darebin-creek {
+  fill: #8d2c68;
+}
+circle.watts-river {
+  fill: #ab357e;
+}
+circle.plenty-river {
+  fill: #ab357e;
+}
+circle.olinda-creek {
+  fill: #c54393;
+}
+circle.yarra-river {
+  fill: #ce61a4;
+}
+circle.watsons-creek {
+  fill: #d77fb5;
+}
+circle.mullum-mullum-creek {
+  fill: #e19dc6;
+}
+circle.woori-yallock-creek {
+  fill: #eabbd8;
+}
 circle.area {
   fill: #005192;
   stroke: none;

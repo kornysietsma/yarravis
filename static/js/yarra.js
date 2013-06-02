@@ -136,10 +136,23 @@ d3.json("/water.json", function(data) {
          .attr("r", 5);
    };  
 
+    var ph = function(d) {
+        return d["pH (pH Units)"] * 4;
+    };
+
+    var airtemp = function(d) {
+        return d["Temperature - AIR (° C)"] * 4;
+    };
+
+    var watertemp = function(d) {
+        return d["Temperature - WATER (° C)"] * 4;
+    };
+
+
    var area = d3.svg.area()
                 .x(function(d)  {return x(d.distance);})
                 .y0(function(d) {return y(d.elevation)})
-                .y1(function(d) {return y((d.elevation + (d["pH (pH Units)"] * 4)));})
+                .y1(function(d) {return y((d.elevation + ph(d)));})
                 .interpolate("linear");
 
    var areas = function(node){
@@ -150,8 +163,23 @@ d3.json("/water.json", function(data) {
         .attr("class", "area");
    };
 
+   var area2 = d3.svg.area()
+                .x(function(d)  {return x(d.distance);})
+                .y0(function(d) {return y(d.elevation + ph(d))})
+                .y1(function(d) {return y((d.elevation + ph(d) + watertemp(d)));})
+                .interpolate("linear");
+
+   var areas2 = function(node){
+     node.selectAll("path.area2")
+        .data(data).enter()
+        .append("path")
+        .attr("d", area2)
+        .attr("class", "area2");
+   };
+
   addDistances(data);
   areas(g);
+  areas2(g);
   riverLines(g);
   sitePoints(g);
 });

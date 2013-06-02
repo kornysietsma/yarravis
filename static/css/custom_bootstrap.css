@@ -5299,6 +5299,10 @@ path.area {
   fill: #8ccbff;
   stroke: none;
 }
+path.area2 {
+  fill: #d0ffa0;
+  stroke: none;
+}
 .box {
   padding-left: 40px;
   padding-top: 100px;

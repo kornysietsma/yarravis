@@ -11,6 +11,8 @@ $(function() {
         mapOptions);
 });
 
+var the_tooltip = $("#tooltip");
+
 d3.json("/water.json", function(data) {
     sampsize = data.length;
 
@@ -146,12 +148,12 @@ d3.json("/water.json", function(data) {
         var long = data[0]["Longitude"];
         console.log(circle);
         var xPosition = parseFloat(circle.getAttribute("cx"));
-        var guessedWidth = $("#tooltip").width() + 12;
+        var guessedWidth = the_tooltip.width() + 12;
         if (xPosition + guessedWidth > window.innerWidth) {
             xPosition = window.innerWidth - guessedWidth;
         }
         var yPosition = parseFloat(circle.getAttribute("cy")) + 80;
-        var guessedHeight = $("#tooltip").height() + 60;
+        var guessedHeight = the_tooltip.height() + 60;
         if (yPosition + guessedHeight > window.innerHeight) {
             yPosition = window.innerHeight - guessedHeight;
         }

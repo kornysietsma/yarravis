@@ -26,6 +26,7 @@
 (def sub-catchment-kw (keyword "Sub Catchment"))
 
 (def date-field #{visit-date-kw})
+(def sub-catchment-field #{sub-catchment-kw})
 
 (defn- parse-ll [s]
   (Double/parseDouble (first (clojure.string/split s #"\s"))))
@@ -42,6 +43,7 @@
             (#{:Longitude :Latitude} (keyword k)) (parse-ll v)
             (numeric-field (keyword k)) (Double/parseDouble v)
             (date-field (keyword k)) (convert-date v)
+            (sub-catchment-field (keyword k)) (simplify-string v)
             :else v)])))
 
 (defn- water-data []
@@ -93,6 +95,9 @@
            (for [[k v] (water-by-locn)]
              (assoc k :values v))))
 
+(defn- simplify-string [value]
+  (clojure.string/lower-case (clojure.string/replace value " " "")))
+
 ; public
 (defn water-readings-by [timestamp]
   (filter visit-date-kw  ; filter out any with no date => not in range
@@ -109,4 +114,8 @@
 
 ; public
 (defn sub-catchments []
-  {:body (set (map sub-catchment-kw (water-data)))})
+  {:body (map
+           simplify-string
+           (set (map
+                  sub-catchment-kw
+                  (water-data))))})

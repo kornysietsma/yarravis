@@ -5319,6 +5319,10 @@ circle.area3 {
   fill: #a6d7ff;
   stroke: none;
 }
+path.turbidity {
+  fill: #ff85d7;
+  stroke: none;
+}
 .box {
   padding-left: 40px;
   padding-top: 100px;

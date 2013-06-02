@@ -16,7 +16,7 @@ var the_tooltip = $("#tooltip");
 d3.json("/water.json", function(data) {
     sampsize = data.length;
 
-    ["pH (pH Units)","Temperature - AIR (° C)","Temperature - WATER (° C)"].forEach(function(key) {
+    ["pH (pH Units)","Temperature - AIR (° C)","Temperature - WATER (° C)","Turbidity - NTU (NTU)"].forEach(function(key) {
         data = assignDefaultValues(data, key);
     });
 
@@ -206,10 +206,15 @@ d3.json("/water.json", function(data) {
         return d["Temperature - WATER (° C)"] * 4;
     };
 
+    var turbidity = function(d) {
+        return d["Turbidity - NTU (NTU)"] * 3;
+    };
+
   var stacks = [
       {func: ph, class: "area"},
       {func: watertemp, class: "area2"},
-      {func: airtemp, class: "area3"}
+      {func: airtemp, class: "area3"},
+      {func: turbidity, class: "turbidity"}
   ];
 
   stacks.forEach(function(stack, ix) {

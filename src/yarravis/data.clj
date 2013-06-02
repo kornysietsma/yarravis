@@ -29,7 +29,8 @@
 (def sub-catchment-field #{sub-catchment-kw})
 
 (defn- simplify-string [value]
-  (clojure.string/lower-case (clojure.string/replace value " " "-")))
+  {:simple (clojure.string/lower-case (clojure.string/replace value " " "-"))
+   :friendly value})
 
 (defn- parse-ll [s]
   (Double/parseDouble (first (clojure.string/split s #"\s"))))
@@ -114,8 +115,7 @@
 
 ; public
 (defn sub-catchments []
-  {:body (map
-           simplify-string
+  {:body
            (set (map
                   sub-catchment-kw
-                  (water-data))))})
+                  (water-data)))})

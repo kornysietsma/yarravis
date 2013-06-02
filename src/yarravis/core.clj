@@ -99,6 +99,7 @@
   (GET "/yarra.json" [] (partition 2 1 (yarradata)))
   (GET "/water.json" [by] (partition 2 1 (water-optionally-by by)))
   (GET "/date-range.json" [] (data/date-range))
+  (GET "/sub-catchments.json" [] (data/sub-catchments))
   (route/files "/" {:root "static"})
   (route/not-found "<h1>Page not found</h1>"))
 

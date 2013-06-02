@@ -21,14 +21,16 @@ d3.json("/water.json", function(data) {
 
     var xScale = 250;
     var yScale = 1;
-    var padTop = 50;  // should match css
+    var padTop = 100;  // should match css
     var padLR = 40;   // should match css
     var padBot = 50;
     // TODO: calculate maxvalx from running distance
 
+    var seaSpace = 10; // room for sea line
+
     var
         w = window.innerWidth - (padLR * 2),
-        h = window.innerHeight - (padTop + padBot),
+        h = window.innerHeight - (padTop + padBot) - 10,
         maxvalx = 1387.5103013400449,
         minvaly = d3.min(data, heightfn),
         maxvaly = d3.max(data, heightfn),
@@ -39,7 +41,7 @@ d3.json("/water.json", function(data) {
      .append("svg")
        .attr("class", "box")
        .attr("width", w)
-       .attr("height", h);
+       .attr("height", h + seaSpace + 10);
 
      var g = svg.append("g")
        .attr("class", "graph");
@@ -54,7 +56,7 @@ d3.json("/water.json", function(data) {
     g.append("svg:text")
       .attr("class", "label")
       .attr("x", x(0))
-      .attr("y", y(-10))
+      .attr("y", y(0) + seaSpace + 3)
       .text("Sea Level");
 
    var dy = function(site){
@@ -98,7 +100,7 @@ d3.json("/water.json", function(data) {
         var long = data[0]["Longitude"];
         console.log(circle);
         var xPosition = parseFloat(circle.getAttribute("cx"));
-        var yPosition = parseFloat(circle.getAttribute("cy")) + h;
+        var yPosition = parseFloat(circle.getAttribute("cy")) + 80;
         console.log("moving hover to", xPosition, yPosition);
 
         d3.select("#tooltip")
@@ -136,10 +138,23 @@ d3.json("/water.json", function(data) {
          .attr("r", 5);
    };  
 
+    var ph = function(d) {
+        return d["pH (pH Units)"] * 4;
+    };
+
+    var airtemp = function(d) {
+        return d["Temperature - AIR (° C)"] * 4;
+    };
+
+    var watertemp = function(d) {
+        return d["Temperature - WATER (° C)"] * 4;
+    };
+
+
    var area = d3.svg.area()
                 .x(function(d)  {return x(d.distance);})
                 .y0(function(d) {return y(d.elevation)})
-                .y1(function(d) {return y((d.elevation + (d["pH (pH Units)"] * 4)));})
+                .y1(function(d) {return y((d.elevation + ph(d)));})
                 .interpolate("linear");
 
    var areas = function(node){
@@ -150,8 +165,23 @@ d3.json("/water.json", function(data) {
         .attr("class", "area");
    };
 
+   var area2 = d3.svg.area()
+                .x(function(d)  {return x(d.distance);})
+                .y0(function(d) {return y(d.elevation + ph(d))})
+                .y1(function(d) {return y((d.elevation + ph(d) + watertemp(d)));})
+                .interpolate("linear");
+
+   var areas2 = function(node){
+     node.selectAll("path.area2")
+        .data(data).enter()
+        .append("path")
+        .attr("d", area2)
+        .attr("class", "area2");
+   };
+
   addDistances(data);
   areas(g);
+  areas2(g);
   riverLines(g);
   sitePoints(g);
 });

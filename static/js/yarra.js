@@ -14,6 +14,8 @@ $(function() {
 d3.json("/water.json", function(data) {
     sampsize = data.length;
 
+    data = assignDefaultValues(data, "pH (pH Units)");
+
     var heightfn = function(d) { return d[0].elevation; };
     var key = function(d) { if (d === undefined) debugger; return d[0].elevation; };
 
@@ -153,3 +155,22 @@ d3.json("/water.json", function(data) {
   riverLines(g);
   sitePoints(g);
 });
+
+function assignDefaultValues( dataset, value )
+{
+    var newData = [];
+    var previousValue = "0";
+    for(var i = 0 ; i < dataset.length ; ++i){
+      if(dataset[i][0][value] === ""){
+        dataset[i][0][value] = previousValue;
+      }
+      if(dataset[i][1][value] === ""){
+        dataset[i][1][value] = previousValue;
+      }
+      newData.push(dataset[i]);
+      previousValue = dataset[i][0][value];
+    }
+      
+    return newData;
+}
+

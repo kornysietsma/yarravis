@@ -61,6 +61,50 @@ d3.json("/water.json", function(data) {
       .attr("y", y(0) + seaSpace + 3)
       .text("Sea Level");
 
+      
+    g.append("svg:text")
+      .attr("class", "label")
+      .attr("x", x(0))
+      .attr("y", y(0) + seaSpace + 3)
+      .text("Sea Level");
+
+    g.append("svg:text")
+      .attr("class", "label")
+      .attr("x", x(1200))
+      .attr("y", y(10))
+      .text("PH level");
+
+    g.append("circle")
+      .attr("class", "area")
+       .attr("cx", x(1190))
+       .attr("cy", y(13))
+       .attr("r", 5);
+
+    g.append("svg:text")
+      .attr("class", "label")
+      .attr("x", x(1200))
+      .attr("y", y(20))
+      .text("Water Temperature");
+
+    g.append("circle")
+      .attr("class", "area2")
+       .attr("cx", x(1190))
+       .attr("cy", y(23))
+       .attr("r", 5);
+
+    g.append("svg:text")
+      .attr("class", "label")
+      .attr("x", x(1200))
+      .attr("y", y(30))
+      .text("Air Temperature");
+
+
+    g.append("circle")
+      .attr("class", "area3")
+       .attr("cx", x(1190))
+       .attr("cy", y(33))
+       .attr("r", 5);
+
    var dy = function(site){
      return Math.random() * 50;
    };

@@ -11,41 +11,49 @@ $(function() {
         mapOptions);
 });
 
-var heightfn = function(d) { return d.height; };
-var key = function(d) { console.log(d); if (d === undefined) debugger; return d.id; };
+d3.json("/water.json", function(data) {
+    sampsize = data.length;
 
-var xScale = 250;
-var yScale = 1;
-var w = 1024,
-    h = 800;
+    var heightfn = function(d) { return d[0].elevation; };
+    var key = function(d) { if (d === undefined) debugger; return d[0].elevation; };
 
+    var xScale = 250;
+    var yScale = 1;
+    var padTop = 50;  // should match css
+    var padLR = 40;   // should match css
+    var padBot = 50;
+    // TODO: calculate maxvalx from running distance
 
-var svg = d3.select("#yarra-chart")
- .append("svg")
-   .attr("class", "box")
-   .attr("width", w)
-   .attr("height", h);
+    var
+        w = window.innerWidth - (padLR * 2),
+        h = window.innerHeight - (padTop + padBot),
+        maxvalx = 1387.5103013400449,
+        minvaly = d3.min(data, heightfn),
+        maxvaly = d3.max(data, heightfn),
+        x = d3.scale.linear().domain([ 0, maxvalx]).range([0, w]),
+        y = d3.scale.linear().domain([ minvaly, maxvaly ]).range([h, 0]);
 
-var g = svg.append("g")
- .attr("class", "graph")
- .attr("transform", "translate(" + 100 + "," + 700 + ")");
+    var svg = d3.select("#yarra-chart")
+     .append("svg")
+       .attr("class", "box")
+       .attr("width", w)
+       .attr("height", h);
 
-g.append("svg:line")
-  .attr("class", "sea-level")
-  .attr("x1", -10)
-  .attr("x2", w * 2)
-  .attr("y1", 0)
-  .attr("y2", 0);
+     var g = svg.append("g")
+       .attr("class", "graph");
 
-g.append("svg:text")
-  .attr("class", "label")
-  .attr("x", -70)
-  .attr("y", 3)
-  .text("Sea Level");
+    g.append("svg:line")
+      .attr("class", "sea-level")
+      .attr("x1", x(0))
+      .attr("x2", x(maxvalx))
+      .attr("y1", y(0))
+      .attr("y2", y(0));
 
-   var convertY = function(site, offset) {
-     return (site.elevation * yScale + offset) * -1;
-   };
+    g.append("svg:text")
+      .attr("class", "label")
+      .attr("x", x(0))
+      .attr("y", y(-10))
+      .text("Sea Level");
 
    var dy = function(site){
      return Math.random() * 50;
@@ -78,8 +86,8 @@ g.append("svg:text")
    };
 
    var line = d3.svg.line()
-              .x(function(d) {return d.distance;})
-              .y(function(d) {return convertY(d,0);});
+              .x(function(d) {return x(d.distance);})
+              .y(function(d) {return y(d.elevation);});
 
               
     var hover = function(data) {
@@ -105,16 +113,6 @@ g.append("svg:text")
          d3.select("#tooltip").classed("hidden", true);
      };
 
-d3.json("/water.json", function(data) {
-    sampsize = data.length;
-
-
-    var maxvalx = d3.max(data, key),
-        minvaly = d3.min(data, heightfn),
-        maxvaly = d3.max(data, heightfn),
-        x = d3.scale.linear().domain([ 0, maxvalx]).range([0, w]),
-        y = d3.scale.linear().domain([ minvaly, maxvaly ]).range([h, 0]);
-
    var riverLines = function(node){
      node.selectAll("path.river")
          .data(data).enter()
@@ -131,15 +129,15 @@ d3.json("/water.json", function(data) {
         .on("mouseover", hover)
         .on("mouseout", hoverOff)
          .attr("class", "site")
-         .attr("cx", function(d) {return d[0].distance;})
-         .attr("cy", function(d) {return convertY(d[0],0);})
+         .attr("cx", function(d) {return x(d[0].distance);})
+         .attr("cy", function(d) {return y(d[0].elevation);})
          .attr("r", 5);
    };  
 
    var area = d3.svg.area()
-                .x(function(d)  {return d.distance;})
-                .y0(function(d) {return d.elevation * -1})
-                .y1(function(d) {return (d.elevation + (d["pH (pH Units)"] * 4)) * -1;})
+                .x(function(d)  {return x(d.distance);})
+                .y0(function(d) {return y(d.elevation)})
+                .y1(function(d) {return y((d.elevation + (d["pH (pH Units)"] * 4)));})
                 .interpolate("linear");
 
    var areas = function(node){

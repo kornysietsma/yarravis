@@ -22,7 +22,11 @@
       </div> -->
       <h1>Yarra River Cross Section</h1>
         <div id="yarra-chart"></div>
-    </div> 
+    </div>
+        <div id="tooltip" class="hidden">
+            <p><span id="value">location</span></p>
+            <div id="map-canvas"/>
+        </div>
 
     <script src="js/jquery-1.9.1.js"></script>
     <script src="js/bootstrap/bootstrap.js"></script>
@@ -30,6 +34,9 @@
     <script src="js/underscore.1.4.4.js"></script>
     <script src="js/underscore.string.2.3.0.js"></script>
     <script type="text/javascript"> _.mixin(_.str.exports()) </script>
+        <script type="text/javascript"
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoHhbCNzzyGdQnc6sy-ayTSQxEEu2y578&sensor=false">
+        </script>
     <script src="js/d3.v3.js"></script>
     <script src="js/yarra.js"></script>
   </body>

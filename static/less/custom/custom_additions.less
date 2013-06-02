@@ -59,3 +59,22 @@ path.area {
 container.centralise {
     width: 100%;
 }
+
+#tooltip {
+  position: absolute;
+  width: 200px;
+  height: auto;
+  background-color: @white;
+  padding: 5px;
+  .border-radius(4px);
+  .box-shadow(0 3px 4px rgba(0,0,0,0.3));
+  .background-clip(padding-box);
+  pointer-events: none;
+  &.hidden {
+    display: none;
+  }
+  #map-canvas {
+    height: 200px;
+  }
+}
+

@@ -1,3 +1,16 @@
+var mapOptions = {
+    center: new google.maps.LatLng(-34.397, 150.644),
+    zoom: 13,
+    disableDefaultUI: true,
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+};
+var the_map;
+
+$(function() {
+    the_map = new google.maps.Map(document.getElementById("map-canvas"),
+        mapOptions);
+});
+
 d3.json("/water.json", function(data) {
     sampsize = data.length;
 
@@ -85,10 +98,35 @@ d3.json("/water.json", function(data) {
           .attr("class", "river");
    };
 
+    var hover = function(data) {
+        var circle = d3.select(this)[0][0];
+        var lat = data[0]["Latitude"];
+        var long = data[0]["Longitude"];
+        console.log(circle);
+        var xPosition = parseFloat(circle.getAttribute("cx"));
+        var yPosition = parseFloat(circle.getAttribute("cy")) + h;
+        console.log("moving hover to", xPosition, yPosition);
+
+        d3.select("#tooltip")
+            .style("left", xPosition + "px")
+            .style("top", yPosition + "px")
+            .select("#value")
+            .text(data[0]["Site Name"]);
+        the_map.setCenter(new google.maps.LatLng(lat,long));
+        d3.select("#tooltip").classed("hidden", false);
+        google.maps.event.trigger(the_map, "resize");
+    };
+     var hoverOff = function(data) {
+         console.log("unhovering");
+         d3.select("#tooltip").classed("hidden", true);
+     };
+
    var sitePoints = function(node){
     node.selectAll("circle.site")
        .data(data).enter()
        .append("circle")
+        .on("mouseover", hover)
+        .on("mouseout", hoverOff)
          .attr("class", "site")
          .attr("cx", function(d) {return d[0].distance;})
          .attr("cy", function(d) {return convertY(d[0],0);})
